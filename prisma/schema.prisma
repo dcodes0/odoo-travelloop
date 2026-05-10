@@ -1,0 +1,79 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String?
+  profilePhoto String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  trips        Trip[]
+}
+
+model Trip {
+  id             String          @id @default(cuid())
+  userId         String
+  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name           String
+  description    String?
+  startDate      DateTime
+  endDate        DateTime
+  coverPhoto     String?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  isPublic       Boolean         @default(false)
+  stops          Stop[]
+  checklistItems ChecklistItem[]
+  notes          Note[]
+}
+
+model Stop {
+  id            String     @id @default(cuid())
+  tripId        String
+  trip          Trip       @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  cityName      String
+  arrivalDate   DateTime
+  departureDate DateTime
+  orderIndex    Int
+  activities    Activity[]
+}
+
+model Activity {
+  id          String   @id @default(cuid())
+  stopId      String
+  stop        Stop     @relation(fields: [stopId], references: [id], onDelete: Cascade)
+  title       String
+  description String?
+  cost        Float    @default(0.0)
+  duration    Int?     // Duration in minutes
+  type        String?  // e.g., 'Sightseeing', 'Food', 'Adventure'
+  date        DateTime?
+}
+
+model ChecklistItem {
+  id       String  @id @default(cuid())
+  tripId   String
+  trip     Trip    @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  item     String
+  isPacked Boolean @default(false)
+  category String? // e.g., 'Clothing', 'Documents'
+}
+
+model Note {
+  id        String   @id @default(cuid())
+  tripId    String
+  trip      Trip     @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  content   String
+  timestamp DateTime @default(now())
+}

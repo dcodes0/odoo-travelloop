@@ -1,66 +1,70 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import Link from 'next/link';
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.js file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="container animate-fade-in" style={{ 
+      display: 'flex', 
+      flexDirection: 'column', 
+      alignItems: 'center', 
+      justifyContent: 'center', 
+      minHeight: '80vh',
+      textAlign: 'center'
+    }}>
+      <div style={{ maxWidth: '800px' }}>
+        <h1 style={{ 
+          fontSize: '4rem', 
+          lineHeight: '1.2', 
+          marginBottom: '1.5rem',
+          background: 'linear-gradient(135deg, var(--primary), var(--secondary))',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent'
+        }}>
+          Personalized Travel Planning Made Easy
+        </h1>
+        
+        <p style={{ 
+          fontSize: '1.25rem', 
+          color: 'var(--text-muted)', 
+          marginBottom: '3rem',
+          lineHeight: '1.6'
+        }}>
+          Transforming the way you plan, organize, and experience your journeys.
+          Dream, design, and manage your multi-city trips all in one collaborative space.
+        </p>
+
+        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
+          <Link href="/login" className="btn btn-primary" style={{ padding: '1rem 2.5rem', fontSize: '1.1rem' }}>
+            Start Planning
+          </Link>
+          <Link href="/dashboard" className="btn btn-outline" style={{ padding: '1rem 2.5rem', fontSize: '1.1rem' }}>
+            View Dashboard
+          </Link>
         </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </div>
+
+      <div style={{ 
+        marginTop: '5rem',
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+        gap: '2rem',
+        width: '100%'
+      }}>
+        <div className="card glass-panel text-center">
+          <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>🗺️</div>
+          <h3>Smart Itineraries</h3>
+          <p className="text-muted">Drag-and-drop your days, stops, and activities with automatic timeline syncing.</p>
         </div>
-      </main>
+        <div className="card glass-panel text-center">
+          <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>💰</div>
+          <h3>Budget Tracking</h3>
+          <p className="text-muted">Stay on top of expenses with automated cost breakdowns and real-time alerts.</p>
+        </div>
+        <div className="card glass-panel text-center">
+          <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>🤝</div>
+          <h3>Collaborative</h3>
+          <p className="text-muted">Share your adventures with friends through public links or edit together.</p>
+        </div>
+      </div>
     </div>
   );
 }

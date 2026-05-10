@@ -1,36 +1,79 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ✈️ Traveloop – Personalized Travel Planning Made Easy
 
-## Getting Started
+> *Transforming the way individuals plan, organize, and experience their journeys.*
 
-First, run the development server:
+Traveloop is an intelligent, collaborative, and responsive web application designed for a seamless travel planning experience. Built during a high-octane hackathon sprint, Traveloop aims to empower users to dream, design, and organize multi-city trips with ease.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🌟 Vision & Mission
+Our **vision** is to provide a platform where users can visualize their journeys through structured itineraries, estimate budgets automatically, and share their global travel plans within an engaging community. 
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Our **mission** is to simplify the complexity of planning multi-city travel by providing intuitive tools to:
+- Add and manage travel stops and durations.
+- Explore cities and activities of interest.
+- Estimate trip budgets automatically.
+- Visualize timelines and share plans with others.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## 🚀 Key Features
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Traveloop comes packed with 14 meticulously designed features:
 
-## Learn More
+1. **Login / Signup Screen:** Secure authentication.
+2. **Dashboard:** Central hub showing recent trips and inspirations.
+3. **Create Trip:** Start a new journey effortlessly.
+4. **My Trips:** List and manage all your itineraries.
+5. **Itinerary Builder:** Drag-and-drop days, stops, and activities.
+6. **Itinerary View:** Visual timeline of the completed trip.
+7. **City Search:** Discover and add new destinations.
+8. **Activity Search:** Enrich your trip with sightseeing and food tours.
+9. **Trip Budget & Cost Breakdown:** Automated financial estimates.
+10. **Packing Checklist:** Never forget essentials again.
+11. **Shared/Public Itinerary View:** Share your trip with friends via public URL.
+12. **User Profile / Settings:** Manage your account preferences.
+13. **Trip Notes / Journal:** Jot down important day-specific memories.
+14. **Admin Dashboard (Analytics):** Monitor platform usage and popular destinations.
 
-To learn more about Next.js, take a look at the following resources:
+## 🛠 Tech Stack
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Designed for speed, scalability, and premium user experience:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Frontend & Backend Framework:** [Next.js (App Router)](https://nextjs.org/)
+- **Styling:** Custom Vanilla CSS with a Premium Design System (Glassmorphism, Dark/Light modes, Micro-animations).
+- **Database:** SQLite (Hackathon-friendly relational database).
+- **ORM:** [Prisma](https://www.prisma.io/)
 
-## Deploy on Vercel
+## 🎨 Design Aesthetics
+We opted for a highly dynamic, vibrant, and premium user interface. The UI features smooth gradients, engaging micro-animations on hover, and modern typography using Google Fonts (Inter/Outfit) to create an experience that feels alive and encourages interaction.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🏁 Getting Started
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Prerequisites
+- Node.js (>= 18)
+- npm
+
+### Installation
+1. **Clone the repository:**
+   ```bash
+   git clone <your-repo-url>
+   cd traveloop-app
+   ```
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+3. **Set up Database:**
+   ```bash
+   npx prisma db push
+   ```
+4. **Run the Development Server:**
+   ```bash
+   npm run dev
+   ```
+5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## 💡 What's Next?
+- Interactive Maps integration for visualizing trip routes.
+- Collaborative real-time editing with friends.
+- AI-powered destination recommendations.
+
+---
+*Built with ❤️ for the Hackathon.*
