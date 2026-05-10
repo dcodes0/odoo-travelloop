@@ -8,7 +8,7 @@ const PROTECTED = ['/dashboard', '/trips', '/profile', '/admin', '/search'];
 // Routes that should redirect authenticated users away (e.g., login page)
 const AUTH_ONLY = ['/login'];
 
-export async function middleware(request) {
+export async function proxy(request) {
   const { pathname } = request.nextUrl;
 
   const isProtected = PROTECTED.some((r) => pathname.startsWith(r));
