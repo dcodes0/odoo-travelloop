@@ -99,9 +99,16 @@ export default function ProfilePage() {
       <div className="card" style={{padding:'1.25rem',marginBottom:'1.5rem'}}>
         <h3 style={{fontFamily:'Outfit',fontWeight:700,fontSize:'1rem',marginBottom:'0.75rem'}}>Quick Links</h3>
         <div style={{display:'flex',gap:'0.6rem',flexWrap:'wrap'}}>
-          <Link href="/dashboard" className="btn btn-outline" style={{padding:'0.5rem 1rem',fontSize:'0.85rem'}}>🏠 Dashboard</Link>
-          <Link href="/trips" className="btn btn-outline" style={{padding:'0.5rem 1rem',fontSize:'0.85rem'}}>🧳 My Trips</Link>
-          <Link href="/trips/create" className="btn btn-outline" style={{padding:'0.5rem 1rem',fontSize:'0.85rem'}}>➕ New Trip</Link>
+          {(!user.role || user.role.toUpperCase() !== 'ADMIN') && (
+            <>
+              <Link href="/dashboard" className="btn btn-outline" style={{padding:'0.5rem 1rem',fontSize:'0.85rem'}}>🏠 Dashboard</Link>
+              <Link href="/trips" className="btn btn-outline" style={{padding:'0.5rem 1rem',fontSize:'0.85rem'}}>🧳 My Trips</Link>
+              <Link href="/trips/create" className="btn btn-outline" style={{padding:'0.5rem 1rem',fontSize:'0.85rem'}}>➕ New Trip</Link>
+            </>
+          )}
+          {user.role && user.role.toUpperCase() === 'ADMIN' && (
+            <Link href="/admin" className="btn btn-outline" style={{padding:'0.5rem 1rem',fontSize:'0.85rem'}}>🛡️ Admin Dashboard</Link>
+          )}
         </div>
       </div>
 

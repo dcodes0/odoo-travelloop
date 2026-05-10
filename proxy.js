@@ -8,7 +8,7 @@ const PROTECTED = ['/dashboard', '/trips', '/profile', '/admin'];
 // Routes that should redirect authenticated users away (e.g., login page)
 const AUTH_ONLY = ['/login'];
 
-export async function middleware(request) {
+export async function proxy(request) {
   const { pathname } = request.nextUrl;
 
   const isProtected = PROTECTED.some((r) => pathname.startsWith(r));
@@ -30,6 +30,20 @@ export async function middleware(request) {
     const loginUrl = new URL('/login', request.url);
     loginUrl.searchParams.set('next', pathname);
     return NextResponse.redirect(loginUrl);
+  }
+
+  // Admin access check
+  if (pathname.startsWith('/admin') || pathname.startsWith('/api/admin')) {
+    if (!user || !user.role || user.role.toUpperCase() !== 'ADMIN') {
+      return NextResponse.redirect(new URL('/dashboard', request.url));
+    }
+  }
+
+  // Redirect ADMIN from regular user routes to admin dashboard
+  if (user && user.role && user.role.toUpperCase() === 'ADMIN') {
+    if (pathname.startsWith('/dashboard') || pathname.startsWith('/trips')) {
+      return NextResponse.redirect(new URL('/admin', request.url));
+    }
   }
 
   if (isAuthOnly && user) {

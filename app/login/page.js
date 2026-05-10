@@ -49,7 +49,11 @@ function LoginForm() {
       if (!res.ok) {
         setError(data.error || 'Something went wrong.');
       } else {
-        router.push(nextPath);
+        if (data.user && data.user.role && data.user.role.toUpperCase() === 'ADMIN') {
+          router.push('/admin');
+        } else {
+          router.push(nextPath);
+        }
         router.refresh();
       }
     } catch {

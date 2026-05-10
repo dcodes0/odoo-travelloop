@@ -80,6 +80,10 @@ export default async function DashboardPage() {
     { href: '/profile', icon: '⚙️', label: 'Profile & Settings' },
   ];
 
+  if (userData.role && userData.role.toUpperCase() === 'ADMIN') {
+    ACTIONS.push({ href: '/admin', icon: '🛡️', label: 'Admin Dashboard', primary: false });
+  }
+
   return (
     <div className="container animate-fade-in" style={{ paddingTop: '2rem', paddingBottom: '3rem' }}>
 

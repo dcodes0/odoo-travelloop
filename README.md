@@ -1,79 +1,73 @@
-# ✈️ Traveloop – Personalized Travel Planning Made Easy
+# ✈️ Traveloop
 
-> *Transforming the way individuals plan, organize, and experience their journeys.*
+**Traveloop** is an intelligent, modern, and collaborative web application designed to simplify the complex process of multi-city travel planning. Built with a sleek, glassmorphic UI and powerful AI integrations, Traveloop empowers users to dream, design, and organize their global itineraries with ease.
 
-Traveloop is an intelligent, collaborative, and responsive web application designed for a seamless travel planning experience. Built during a high-octane hackathon sprint, Traveloop aims to empower users to dream, design, and organize multi-city trips with ease.
+![Traveloop Dashboard Demo](https://via.placeholder.com/1000x500.png?text=Traveloop+Dashboard)
 
-## 🌟 Vision & Mission
-Our **vision** is to provide a platform where users can visualize their journeys through structured itineraries, estimate budgets automatically, and share their global travel plans within an engaging community. 
+## 🌟 Vision & Features
 
-Our **mission** is to simplify the complexity of planning multi-city travel by providing intuitive tools to:
-- Add and manage travel stops and durations.
-- Explore cities and activities of interest.
-- Estimate trip budgets automatically.
-- Visualize timelines and share plans with others.
+Our mission is to eliminate the stress of planning vacations by centralizing everything you need in one intuitive platform:
 
-## 🚀 Key Features
+- **🗺️ Interactive Itinerary Builder**: Add cities, manage travel dates, and drag-and-drop activities to craft the perfect multi-stop journey.
+- **✨ AI-Powered Suggestions**: Integrated with **Groq AI (Llama 3)**, Traveloop automatically suggests intelligent activities and stops based on your trip's unique context.
+- **💰 Smart Budgeting**: Instantly track your estimated costs and calculate average daily budgets dynamically as you add activities to your itinerary.
+- **🛡️ Secure Admin Dashboard**: A fully protected analytics suite with Recharts visualizations, tracking platform usage, popular destinations, and user engagement.
+- **🔗 Public Sharing**: Generate beautiful, read-only public links to share your planned itineraries with friends, family, or social media.
 
-Traveloop comes packed with 14 meticulously designed features:
+## 💻 Tech Stack
 
-1. **Login / Signup Screen:** Secure authentication.
-2. **Dashboard:** Central hub showing recent trips and inspirations.
-3. **Create Trip:** Start a new journey effortlessly.
-4. **My Trips:** List and manage all your itineraries.
-5. **Itinerary Builder:** Drag-and-drop days, stops, and activities.
-6. **Itinerary View:** Visual timeline of the completed trip.
-7. **City Search:** Discover and add new destinations.
-8. **Activity Search:** Enrich your trip with sightseeing and food tours.
-9. **Trip Budget & Cost Breakdown:** Automated financial estimates.
-10. **Packing Checklist:** Never forget essentials again.
-11. **Shared/Public Itinerary View:** Share your trip with friends via public URL.
-12. **User Profile / Settings:** Manage your account preferences.
-13. **Trip Notes / Journal:** Jot down important day-specific memories.
-14. **Admin Dashboard (Analytics):** Monitor platform usage and popular destinations.
-
-## 🛠 Tech Stack
-
-Designed for speed, scalability, and premium user experience:
-
-- **Frontend & Backend Framework:** [Next.js (App Router)](https://nextjs.org/)
-- **Styling:** Custom Vanilla CSS with a Premium Design System (Glassmorphism, Dark/Light modes, Micro-animations).
-- **Database:** SQLite (Hackathon-friendly relational database).
-- **ORM:** [Prisma](https://www.prisma.io/)
-
-## 🎨 Design Aesthetics
-We opted for a highly dynamic, vibrant, and premium user interface. The UI features smooth gradients, engaging micro-animations on hover, and modern typography using Google Fonts (Inter/Outfit) to create an experience that feels alive and encourages interaction.
-
-## 🏁 Getting Started
-
-### Prerequisites
-- Node.js (>= 18)
-- npm
-
-### Installation
-1. **Clone the repository:**
-   ```bash
-   git clone <your-repo-url>
-   cd traveloop-app
-   ```
-2. **Install dependencies:**
-   ```bash
-   npm install
-   ```
-3. **Set up Database:**
-   ```bash
-   npx prisma db push
-   ```
-4. **Run the Development Server:**
-   ```bash
-   npm run dev
-   ```
-5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-## 💡 What's Next?
-- Interactive Maps integration for visualizing trip routes.
-- Collaborative real-time editing with friends.
-- AI-powered destination recommendations.
+- **Frontend**: Next.js 16 (App Router), React 19, Vanilla CSS (Custom Glassmorphism Design System), Recharts
+- **Backend**: Next.js Server API Routes, Server Components
+- **Database**: Prisma v6 ORM, SQLite
+- **Authentication**: Custom Iron-Session implementation with bcrypt password hashing
+- **AI Integration**: Groq API (llama-3.3-70b-versatile)
 
 ---
-*Built with ❤️ for the Hackathon.*
+
+## 🚀 How to Run Locally
+
+To get the application running on your local machine, you will need to open **two separate terminal windows**.
+
+### 1. Initial Setup
+First, clone the repository and install the dependencies:
+```bash
+git clone https://github.com/dcodes0/odoo-travelloop.git
+cd odoo-travelloop
+npm install
+```
+
+Create a `.env.local` file in the root directory and add the required environment variables:
+```env
+DATABASE_URL="file:./dev.db"
+SESSION_SECRET="your-32-character-ultra-secure-secret-key-goes-here!!"
+GROQ_API_KEY="your_groq_api_key"
+```
+
+Sync the database schema:
+```bash
+npx prisma db push
+```
+
+### 2. Run the Next.js Application Server
+In your **first terminal window**, start the Next.js development server:
+```bash
+npm run dev
+```
+The application will now be running on [http://localhost:3000](http://localhost:3000).
+
+### 3. Run the Prisma Studio Database Manager
+In your **second terminal window**, start the Prisma Studio visual database editor:
+```bash
+npx prisma studio
+```
+The database manager will now be running on [http://localhost:5555](http://localhost:5555). 
+
+> **Tip:** You can use Prisma Studio to instantly grant yourself administrative privileges! Simply find your user record, change the `role` field from `"USER"` to `"ADMIN"`, save the change, and log back into Traveloop to access the secret Admin Dashboard.
+
+---
+
+## 🛡️ Security & Privacy
+Traveloop utilizes robust stateless cookie sessions via `iron-session`. All user passwords are encrypted using `bcryptjs` with a high salt round before ever reaching the database. Admin API endpoints are strictly protected by server-side middleware and role-checking validations.
+
+## 🤝 Contributing
+Traveloop was built during a high-octane hackathon sprint! We welcome pull requests, issues, and feature suggestions to help us continue making travel planning effortless.
