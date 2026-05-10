@@ -117,7 +117,7 @@ export default async function DashboardPage() {
       </div>
 
       {/* ── Main + Sidebar ── */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 290px', gap: '2rem', alignItems: 'start' }}>
+      <div className="r-grid-2">
 
         {/* Trips */}
         <div>

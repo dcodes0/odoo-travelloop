@@ -9,7 +9,7 @@ function LoginForm() {
   const searchParams = useSearchParams();
   const nextPath = searchParams.get('next') || '/dashboard';
 
-  const [mode, setMode] = useState('login'); // 'login' | 'register'
+  const [mode, setMode] = useState(searchParams.get('tab') === 'register' ? 'register' : 'login'); // 'login' | 'register'
   const [form, setForm] = useState({ name: '', email: '', password: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -67,8 +67,7 @@ function LoginForm() {
       overflow: 'hidden',
     }}>
       {/* Left Panel — Brand */}
-      <div style={{
-        flex: '0 0 45%',
+      <div className="login-brand-panel" style={{
         background: 'linear-gradient(145deg, #1e1b4b 0%, #312e81 40%, #0c4a6e 100%)',
         display: 'flex',
         flexDirection: 'column',

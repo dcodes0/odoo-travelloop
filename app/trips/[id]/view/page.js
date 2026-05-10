@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { sessionOptions } from '@/lib/session';
 import prisma from '@/lib/prisma';
+import TripNav from '@/app/components/TripNav';
 
 const TYPE_ICONS = { Sightseeing:'🏛️', Food:'🍽️', Adventure:'🧗', Culture:'🎭', Shopping:'🛍️', Relaxation:'🧘', Transport:'🚂', Accommodation:'🏨' };
 function fmtDate(d) { return d ? new Date(d).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}) : '—'; }
@@ -11,29 +12,14 @@ function fmtShort(d) { return d ? new Date(d).toLocaleDateString('en-US',{month:
 function fmtDur(m) { return m >= 60 ? `${Math.floor(m/60)}h${m%60?` ${m%60}m`:''}` : `${m}m`; }
 function daysBetween(a,b) { return Math.round((new Date(b)-new Date(a))/86400000); }
 
-function TripNav({ tripId, active }) {
-  const tabs = [
-    { key:'builder', label:'🗺️ Builder', href:`/trips/${tripId}/builder` },
-    { key:'budget',  label:'💰 Budget',  href:`/trips/${tripId}/budget`  },
-    { key:'checklist',label:'☑️ Checklist',href:`/trips/${tripId}/checklist`},
-    { key:'notes',   label:'📝 Notes',   href:`/trips/${tripId}/notes`   },
-    { key:'view',    label:'👁️ View',    href:`/trips/${tripId}/view`    },
-  ];
-  return (
-    <div style={{display:'flex',gap:'0.35rem',flexWrap:'wrap',marginBottom:'1.75rem'}}>
-      {tabs.map(t=>(
-        <Link key={t.key} href={t.href} style={{padding:'0.45rem 1rem',borderRadius:'var(--radius-md)',fontSize:'0.82rem',fontWeight:600,background:active===t.key?'linear-gradient(135deg,var(--primary),var(--secondary))':'var(--bg-card)',color:active===t.key?'#fff':'var(--text-muted)',border:`1px solid ${active===t.key?'transparent':'var(--border-light)'}`,transition:'all 0.15s'}}>{t.label}</Link>
-      ))}
-    </div>
-  );
-}
 
 export default async function TripViewPage({ params }) {
+  const { id: tripId } = await params;
   const session = await getIronSession(await cookies(), sessionOptions);
   if (!session.user) redirect('/login');
 
   const trip = await prisma.trip.findUnique({
-    where: { id: params.id },
+    where: { id: tripId },
     include: { stops: { orderBy: { orderIndex:'asc' }, include: { activities: { orderBy: { date:'asc' } } } } },
   });
 

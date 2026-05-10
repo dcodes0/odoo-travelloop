@@ -2,6 +2,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import TripNav from '@/app/components/TripNav';
 
 const TYPE_ICONS = { Sightseeing:'🏛️', Food:'🍽️', Adventure:'🧗', Culture:'🎭', Shopping:'🛍️', Relaxation:'🧘', Transport:'🚂', Accommodation:'🏨' };
 const TYPES = Object.keys(TYPE_ICONS);
@@ -10,29 +11,6 @@ const BLANK_STOP = { cityName:'', arrivalDate:'', departureDate:'' };
 
 function fmtDate(d) { return d ? new Date(d).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '—'; }
 function fmtDur(m) { if (!m) return ''; return m >= 60 ? `${Math.floor(m/60)}h${m%60?` ${m%60}m`:''}` : `${m}m`; }
-
-function TripNav({ tripId, active }) {
-  const tabs = [
-    { key:'builder', label:'🗺️ Builder', href:`/trips/${tripId}/builder` },
-    { key:'budget',  label:'💰 Budget',  href:`/trips/${tripId}/budget`  },
-    { key:'checklist', label:'☑️ Checklist', href:`/trips/${tripId}/checklist` },
-    { key:'notes',   label:'📝 Notes',   href:`/trips/${tripId}/notes`   },
-    { key:'view',    label:'👁️ View',    href:`/trips/${tripId}/view`    },
-  ];
-  return (
-    <div style={{ display:'flex', gap:'0.35rem', flexWrap:'wrap', marginBottom:'1.75rem' }}>
-      {tabs.map(t => (
-        <Link key={t.key} href={t.href} style={{
-          padding:'0.45rem 1rem', borderRadius:'var(--radius-md)', fontSize:'0.82rem', fontWeight:600,
-          background: active===t.key ? 'linear-gradient(135deg,var(--primary),var(--secondary))' : 'var(--bg-card)',
-          color: active===t.key ? '#fff' : 'var(--text-muted)',
-          border: `1px solid ${active===t.key ? 'transparent' : 'var(--border-light)'}`,
-          transition:'all 0.15s',
-        }}>{t.label}</Link>
-      ))}
-    </div>
-  );
-}
 
 export default function BuilderPage() {
   const { id: tripId } = useParams();

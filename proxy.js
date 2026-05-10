@@ -3,7 +3,7 @@ import { getIronSession } from 'iron-session';
 import { sessionOptions } from './lib/session';
 
 // Routes that require authentication
-const PROTECTED = ['/dashboard', '/trips', '/profile', '/admin', '/search'];
+const PROTECTED = ['/dashboard', '/trips', '/profile', '/admin'];
 
 // Routes that should redirect authenticated users away (e.g., login page)
 const AUTH_ONLY = ['/login'];
@@ -45,7 +45,6 @@ export const config = {
     '/trips/:path*',
     '/profile/:path*',
     '/admin/:path*',
-    '/search/:path*',
     '/login',
   ],
 };

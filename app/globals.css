@@ -224,3 +224,52 @@ a {
   background-color: rgba(244, 63, 94, 0.1);
   color: var(--accent);
 }
+
+/* ─── Responsive Utilities ─── */
+.r-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 290px;
+  gap: 2rem;
+  align-items: start;
+}
+.r-grid-2-equal {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+@media (max-width: 900px) {
+  .r-grid-2,
+  .r-grid-2-equal {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Login page: hide brand panel on mobile */
+.login-brand-panel {
+  flex: 0 0 45%;
+}
+@media (max-width: 768px) {
+  .login-brand-panel {
+    display: none !important;
+  }
+  h1 { font-size: 1.65rem !important; }
+  .container { padding-left: 1rem; padding-right: 1rem; }
+}
+
+/* Admin table horizontal scroll */
+.table-scroll { overflow-x: auto; }
+
+/* Sticky sidebar clamp for small screens */
+@media (max-width: 900px) {
+  [style*="position: sticky"],
+  [style*="position:sticky"] {
+    position: static !important;
+  }
+}
+
+/* Input and select width safety */
+input, select, textarea {
+  max-width: 100%;
+  box-sizing: border-box;
+}

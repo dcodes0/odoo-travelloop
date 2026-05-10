@@ -100,7 +100,7 @@ export default function CreateTripPage() {
         <span style={{ color: 'var(--text-dark)', fontWeight: 600 }}>Create Trip</span>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: '2.5rem', alignItems: 'start' }}>
+      <div className="r-grid-2" style={{ gap: '2.5rem' }}>
 
         {/* ── Form ── */}
         <div>

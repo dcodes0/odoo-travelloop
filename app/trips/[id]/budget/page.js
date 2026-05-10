@@ -2,27 +2,12 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import TripNav from '@/app/components/TripNav';
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, PieChart, Pie, Cell, Legend } from 'recharts';
 
 const TYPE_COLORS = { Sightseeing:'#4F46E5', Food:'#F59E0B', Adventure:'#EF4444', Culture:'#8B5CF6', Shopping:'#EC4899', Relaxation:'#10B981', Transport:'#6B7280', Accommodation:'#06B6D4' };
 const PIE_COLORS = Object.values(TYPE_COLORS);
 
-function TripNav({ tripId, active }) {
-  const tabs = [
-    { key:'builder', label:'🗺️ Builder', href:`/trips/${tripId}/builder` },
-    { key:'budget',  label:'💰 Budget',  href:`/trips/${tripId}/budget`  },
-    { key:'checklist',label:'☑️ Checklist',href:`/trips/${tripId}/checklist`},
-    { key:'notes',   label:'📝 Notes',   href:`/trips/${tripId}/notes`   },
-    { key:'view',    label:'👁️ View',    href:`/trips/${tripId}/view`    },
-  ];
-  return (
-    <div style={{display:'flex',gap:'0.35rem',flexWrap:'wrap',marginBottom:'1.75rem'}}>
-      {tabs.map(t=>(
-        <Link key={t.key} href={t.href} style={{padding:'0.45rem 1rem',borderRadius:'var(--radius-md)',fontSize:'0.82rem',fontWeight:600,background:active===t.key?'linear-gradient(135deg,var(--primary),var(--secondary))':'var(--bg-card)',color:active===t.key?'#fff':'var(--text-muted)',border:`1px solid ${active===t.key?'transparent':'var(--border-light)'}`,transition:'all 0.15s'}}>{t.label}</Link>
-      ))}
-    </div>
-  );
-}
 
 export default function BudgetPage() {
   const { id: tripId } = useParams();
@@ -96,7 +81,7 @@ export default function BudgetPage() {
           <Link href={`/trips/${tripId}/builder`} className="btn btn-primary">Go to Builder</Link>
         </div>
       ) : (
-        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'2rem'}}>
+        <div className="r-grid-2-equal">
           {/* Bar chart */}
           {cityData.length > 0 && (
             <div className="card" style={{padding:'1.5rem'}}>

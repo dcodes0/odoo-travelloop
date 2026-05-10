@@ -6,8 +6,9 @@ function fmt(d) { return d ? new Date(d).toLocaleDateString('en-US',{month:'long
 function fmtShort(d) { return d ? new Date(d).toLocaleDateString('en-US',{month:'short',day:'numeric'}) : '—'; }
 
 export default async function SharePage({ params }) {
+  const { tripId } = await params;
   const trip = await prisma.trip.findUnique({
-    where: { id: params.tripId },
+    where: { id: tripId },
     include: { stops: { orderBy:{orderIndex:'asc'}, include:{ activities:{orderBy:{date:'asc'}} } }, user: { select:{name:true,email:true} } },
   });
 
