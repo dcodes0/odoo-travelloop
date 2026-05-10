@@ -12,7 +12,8 @@ async function verifyAccess(tripId, actId, userId) {
   return { activity };
 }
 
-export async function PUT(request, { params }) {
+export async function PUT(request, { params: paramsPromise }) {
+  const params = await paramsPromise;
   try {
     const session = await getIronSession(await cookies(), sessionOptions);
     if (!session.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -33,7 +34,8 @@ export async function PUT(request, { params }) {
   } catch (e) { return NextResponse.json({ error: 'Failed.' }, { status: 500 }); }
 }
 
-export async function DELETE(request, { params }) {
+export async function DELETE(request, { params: paramsPromise }) {
+  const params = await paramsPromise;
   try {
     const session = await getIronSession(await cookies(), sessionOptions);
     if (!session.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

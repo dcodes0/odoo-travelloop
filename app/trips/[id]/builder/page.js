@@ -32,6 +32,27 @@ export default function BuilderPage() {
   const [editActId, setEditActId]     = useState(null);
   const [editActForm, setEditActForm] = useState(BLANK_ACT);
 
+  // AI suggestions
+  const [aiStopSuggestions, setAiStopSuggestions] = useState([]);
+  const [aiActSuggestions, setAiActSuggestions]   = useState([]);
+  const [aiLoading, setAiLoading] = useState(false);
+
+  async function getAISuggestions(type, cityName) {
+    setAiLoading(true);
+    try {
+      const res = await fetch('/api/ai/suggest', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type, tripName: trip?.name, tripDescription: trip?.description, cityName, startDate: trip?.startDate, endDate: trip?.endDate }),
+      });
+      const d = await res.json();
+      if (!res.ok) { setErr(d.error || 'AI error'); return; }
+      if (type === 'stop') setAiStopSuggestions(d.suggestions || []);
+      else setAiActSuggestions(d.suggestions || []);
+    } catch { setErr('Failed to get AI suggestions.'); }
+    finally { setAiLoading(false); }
+  }
+
   const fetchTrip = useCallback(async () => {
     const res = await fetch(`/api/trips/${tripId}`);
     if (!res.ok) { setErr('Trip not found.'); setLoading(false); return; }
@@ -134,7 +155,7 @@ export default function BuilderPage() {
         </div>
         <div style={{display:'flex',gap:'0.6rem'}}>
           <Link href={`/trips/${tripId}/view`} className="btn btn-outline" style={{padding:'0.4rem 1rem',fontSize:'0.85rem'}}>👁️ View</Link>
-          <button onClick={()=>{setShowAddStop(true);setErr('');}} className="btn btn-primary" style={{padding:'0.4rem 1rem',fontSize:'0.85rem'}}>＋ Add Stop</button>
+          <button onClick={()=>{setShowAddStop(true);setAiStopSuggestions([]);setErr('');}} className="btn btn-primary" style={{padding:'0.4rem 1rem',fontSize:'0.85rem'}}>＋ Add Stop</button>
         </div>
       </div>
 
@@ -146,7 +167,7 @@ export default function BuilderPage() {
           <div style={{fontSize:'3rem',marginBottom:'1rem'}}>🗺️</div>
           <h3 style={{fontFamily:'Outfit',fontWeight:700,marginBottom:'0.5rem'}}>Add your first stop</h3>
           <p style={{color:'var(--text-muted)',marginBottom:'1.5rem',maxWidth:340,margin:'0 auto 1.5rem',lineHeight:1.6}}>A stop is a city or destination in your itinerary. Add stops in order, then add activities to each.</p>
-          <button onClick={()=>setShowAddStop(true)} className="btn btn-primary">＋ Add First Stop</button>
+          <button onClick={()=>{setShowAddStop(true);setAiStopSuggestions([]);}} className="btn btn-primary">＋ Add First Stop</button>
         </div>
       )}
 
@@ -228,6 +249,22 @@ export default function BuilderPage() {
               {/* Add activity form */}
               {addActStop === stop.id ? (
                 <div className="card" style={{padding:'1rem',background:'rgba(79,70,229,0.03)',border:'1px solid rgba(79,70,229,0.15)',marginTop:'0.75rem',display:'flex',flexDirection:'column',gap:'0.6rem'}}>
+                  <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',flexWrap:'wrap',gap:'0.4rem'}}>
+                    <span style={{fontSize:'0.8rem',fontWeight:600,color:'var(--text-muted)'}}>New Activity</span>
+                    <button onClick={()=>{setAiActSuggestions([]);getAISuggestions('activity',stop.cityName);}} disabled={aiLoading} style={{...inputSm,width:'auto',padding:'0.3rem 0.75rem',cursor:'pointer',background:'linear-gradient(135deg,#7C3AED,#4F46E5)',color:'#fff',border:'none',fontWeight:600,fontSize:'0.75rem'}}>
+                      {aiLoading?'✨ Thinking…':'✨ AI Suggest Activities'}
+                    </button>
+                  </div>
+                  {aiActSuggestions.length>0&&(
+                    <div style={{display:'flex',flexDirection:'column',gap:'0.35rem'}}>
+                      <p style={{fontSize:'0.72rem',fontWeight:600,color:'var(--primary)'}}>✨ Click to use a suggestion:</p>
+                      {aiActSuggestions.map((a,i)=>(
+                        <button key={i} onClick={()=>setActForm({title:a.title,type:a.type||'Sightseeing',date:'',duration:String(a.duration||''),cost:String(a.cost||''),description:a.description||''})} style={{...inputSm,textAlign:'left',cursor:'pointer',padding:'0.4rem 0.7rem',background:'rgba(79,70,229,0.05)',borderColor:'rgba(79,70,229,0.2)'}}>
+                          <strong>{a.title}</strong> <span style={{color:'var(--text-muted)',fontSize:'0.75rem'}}>· {a.type} · {a.duration}min · ${a.cost}</span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
                   <div style={{display:'grid',gridTemplateColumns:'1fr 130px',gap:'0.5rem'}}>
                     <input style={inputSm} placeholder="Activity title *" value={actForm.title} onChange={e=>setActForm(p=>({...p,title:e.target.value}))} autoFocus />
                     <select style={selectSm} value={actForm.type} onChange={e=>setActForm(p=>({...p,type:e.target.value}))}>
@@ -242,11 +279,11 @@ export default function BuilderPage() {
                   <textarea style={{...inputSm,resize:'vertical'}} rows={2} placeholder="Description (optional)" value={actForm.description} onChange={e=>setActForm(p=>({...p,description:e.target.value}))} />
                   <div style={{display:'flex',gap:'0.5rem'}}>
                     <button onClick={()=>addActivity(stop.id)} disabled={saving} className="btn btn-primary" style={{padding:'0.4rem 0.9rem',fontSize:'0.82rem'}}>＋ Add Activity</button>
-                    <button onClick={()=>{setAddActStop(null);setActForm(BLANK_ACT);}} className="btn btn-outline" style={{padding:'0.4rem 0.9rem',fontSize:'0.82rem'}}>Cancel</button>
+                    <button onClick={()=>{setAddActStop(null);setActForm(BLANK_ACT);setAiActSuggestions([]);}} className="btn btn-outline" style={{padding:'0.4rem 0.9rem',fontSize:'0.82rem'}}>Cancel</button>
                   </div>
                 </div>
               ) : (
-                <button onClick={()=>{setAddActStop(stop.id);setActForm(BLANK_ACT);setErr('');}} style={{marginTop:'0.5rem',background:'none',border:'1px dashed var(--border-light)',borderRadius:'var(--radius-md)',padding:'0.5rem 1rem',cursor:'pointer',color:'var(--primary)',fontSize:'0.82rem',fontWeight:600,width:'100%',transition:'all 0.15s'}}>＋ Add Activity</button>
+                <button onClick={()=>{setAddActStop(stop.id);setActForm(BLANK_ACT);setAiActSuggestions([]);setErr('');}} style={{marginTop:'0.5rem',background:'none',border:'1px dashed var(--border-light)',borderRadius:'var(--radius-md)',padding:'0.5rem 1rem',cursor:'pointer',color:'var(--primary)',fontSize:'0.82rem',fontWeight:600,width:'100%',transition:'all 0.15s'}}>＋ Add Activity</button>
               )}
             </div>
           </div>
@@ -255,7 +292,22 @@ export default function BuilderPage() {
         {/* Add Stop form */}
         {showAddStop && (
           <div className="card" style={{padding:'1.25rem',border:'2px dashed var(--primary)',background:'rgba(79,70,229,0.03)'}}>
-            <h3 style={{fontFamily:'Outfit',fontWeight:700,marginBottom:'1rem',fontSize:'0.95rem'}}>＋ New Stop</h3>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'1rem',flexWrap:'wrap',gap:'0.5rem'}}>
+              <h3 style={{fontFamily:'Outfit',fontWeight:700,fontSize:'0.95rem',margin:0}}>＋ New Stop</h3>
+              <button onClick={()=>{setAiStopSuggestions([]);getAISuggestions('stop');}} disabled={aiLoading} style={{...inputSm,padding:'0.35rem 0.85rem',cursor:'pointer',background:'linear-gradient(135deg,#7C3AED,#4F46E5)',color:'#fff',border:'none',fontWeight:600,fontSize:'0.78rem'}}>
+                {aiLoading?'✨ Thinking…':'✨ AI Suggest Stops'}
+              </button>
+            </div>
+            {aiStopSuggestions.length>0&&(
+              <div style={{marginBottom:'1rem',display:'flex',flexDirection:'column',gap:'0.4rem'}}>
+                <p style={{fontSize:'0.75rem',fontWeight:600,color:'var(--primary)',marginBottom:'0.25rem'}}>✨ AI Suggestions — click to use:</p>
+                {aiStopSuggestions.map((s,i)=>(
+                  <button key={i} onClick={()=>{setStopForm(p=>({...p,cityName:s.cityName}));}} style={{...inputSm,textAlign:'left',cursor:'pointer',padding:'0.45rem 0.75rem',background:'rgba(79,70,229,0.05)',borderColor:'rgba(79,70,229,0.2)'}}>
+                    <strong>{s.cityName}</strong> — <span style={{color:'var(--text-muted)',fontSize:'0.78rem'}}>{s.reason}</span>
+                  </button>
+                ))}
+              </div>
+            )}
             <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:'0.75rem',marginBottom:'0.75rem'}}>
               <div>
                 <label style={{fontSize:'0.78rem',fontWeight:600,display:'block',marginBottom:'0.3rem'}}>City Name *</label>
@@ -274,7 +326,7 @@ export default function BuilderPage() {
               <button onClick={addStop} disabled={saving} className="btn btn-primary" style={{padding:'0.5rem 1.2rem',fontSize:'0.85rem'}}>
                 {saving ? 'Saving…' : '＋ Add Stop'}
               </button>
-              <button onClick={()=>{setShowAddStop(false);setStopForm(BLANK_STOP);setErr('');}} className="btn btn-outline" style={{padding:'0.5rem 1.2rem',fontSize:'0.85rem'}}>Cancel</button>
+              <button onClick={()=>{setShowAddStop(false);setStopForm(BLANK_STOP);setErr('');setAiStopSuggestions([]);}} className="btn btn-outline" style={{padding:'0.5rem 1.2rem',fontSize:'0.85rem'}}>Cancel</button>
             </div>
           </div>
         )}

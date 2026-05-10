@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { sessionOptions } from '@/lib/session';
 import prisma from '@/lib/prisma';
 import TripNav from '@/app/components/TripNav';
+import ShareToggle from '@/app/components/ShareToggle';
 
 const TYPE_ICONS = { Sightseeing:'🏛️', Food:'🍽️', Adventure:'🧗', Culture:'🎭', Shopping:'🛍️', Relaxation:'🧘', Transport:'🚂', Accommodation:'🏨' };
 function fmtDate(d) { return d ? new Date(d).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}) : '—'; }
@@ -38,7 +39,7 @@ export default async function TripViewPage({ params }) {
         <span style={{color:'var(--text-dark)',fontWeight:600}}>View</span>
       </div>
 
-      <TripNav tripId={params.id} active="view" />
+      <TripNav tripId={tripId} active="view" />
 
       {/* Hero */}
       <div style={{borderRadius:'var(--radius-xl)',overflow:'hidden',marginBottom:'2rem',background:trip.coverPhoto?`url(${trip.coverPhoto}) center/cover`:'linear-gradient(135deg,#4F46E5,#06B6D4)',minHeight:200,display:'flex',alignItems:'flex-end',padding:'2rem',position:'relative'}}>
@@ -133,15 +134,9 @@ export default async function TripViewPage({ params }) {
         </div>
       )}
 
-      {/* Share CTA */}
+      {/* Share toggle — only for trip owner */}
       {trip.userId === session.user.id && (
-        <div className="card glass-panel" style={{marginTop:'2.5rem',padding:'1.25rem',display:'flex',justifyContent:'space-between',alignItems:'center',flexWrap:'wrap',gap:'1rem'}}>
-          <div>
-            <p style={{fontFamily:'Outfit',fontWeight:700,marginBottom:'0.2rem'}}>Share this itinerary</p>
-            <p style={{color:'var(--text-muted)',fontSize:'0.82rem'}}>{trip.isPublic ? '🔗 This trip is publicly accessible.' : '🔒 This trip is private.'}</p>
-          </div>
-          <Link href={`/share/${trip.id}`} className="btn btn-primary" style={{padding:'0.5rem 1.2rem',fontSize:'0.85rem'}}>🔗 Manage Sharing</Link>
-        </div>
+        <ShareToggle tripId={tripId} initialIsPublic={trip.isPublic} />
       )}
     </div>
   );

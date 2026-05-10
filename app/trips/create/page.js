@@ -39,7 +39,6 @@ export default function CreateTripPage() {
     startDate: '',
     endDate: '',
     currency: 'USD',
-    coverPhoto: '',
   });
   const [error, setError]     = useState('');
   const [loading, setLoading] = useState(false);
@@ -69,7 +68,6 @@ export default function CreateTripPage() {
           startDate:   form.startDate,
           endDate:     form.endDate,
           currency:    form.currency,
-          coverPhoto:  form.coverPhoto.trim() || null,
         }),
       });
       const data = await res.json();
@@ -84,9 +82,7 @@ export default function CreateTripPage() {
 
   const days = daysBetween(form.startDate, form.endDate);
   const previewGrad = gradient(form.name || 'trip');
-  const coverBg = form.coverPhoto
-    ? `url(${form.coverPhoto}) center/cover`
-    : previewGrad;
+  const coverBg = previewGrad;
 
   return (
     <div className="container animate-fade-in" style={{ paddingTop: '2rem', paddingBottom: '3rem' }}>
@@ -201,9 +197,9 @@ export default function CreateTripPage() {
                 </div>
               )}
 
-              {/* Currency + Cover photo */}
-              <div style={{ display: 'grid', gridTemplateColumns: '160px 1fr', gap: '1rem' }}>
-                <div className="input-group" style={{ margin: 0 }}>
+              {/* Currency row */}
+              <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                <div className="input-group" style={{ margin: 0, width: 160 }}>
                   <label className="input-label" htmlFor="trip-currency">Currency</label>
                   <select
                     id="trip-currency"
@@ -215,18 +211,9 @@ export default function CreateTripPage() {
                     {CURRENCIES.map(c => <option key={c} value={c}>{c}</option>)}
                   </select>
                 </div>
-                <div className="input-group" style={{ margin: 0 }}>
-                  <label className="input-label" htmlFor="trip-cover">Cover Photo URL <span style={{ color: 'var(--text-muted)', fontWeight: 400 }}>(optional)</span></label>
-                  <input
-                    id="trip-cover"
-                    className="input-field"
-                    type="url"
-                    placeholder="https://images.unsplash.com/…"
-                    value={form.coverPhoto}
-                    onChange={e => set('coverPhoto', e.target.value)}
-                    style={{ width: '100%' }}
-                  />
-                </div>
+                <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '1.4rem', lineHeight: 1.5 }}>
+                  Budget tracking uses this currency in the Builder.
+                </p>
               </div>
 
               {/* Error */}

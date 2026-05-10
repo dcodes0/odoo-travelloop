@@ -10,7 +10,8 @@ async function getAuthedUser() {
 }
 
 // GET /api/trips/[id]
-export async function GET(request, { params }) {
+export async function GET(request, { params: paramsPromise }) {
+  const params = await paramsPromise;
   try {
     const user = await getAuthedUser();
     if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -40,7 +41,8 @@ export async function GET(request, { params }) {
 }
 
 // PUT /api/trips/[id]
-export async function PUT(request, { params }) {
+export async function PUT(request, { params: paramsPromise }) {
+  const params = await paramsPromise;
   try {
     const user = await getAuthedUser();
     if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -69,7 +71,8 @@ export async function PUT(request, { params }) {
 }
 
 // DELETE /api/trips/[id]
-export async function DELETE(request, { params }) {
+export async function DELETE(request, { params: paramsPromise }) {
+  const params = await paramsPromise;
   try {
     const user = await getAuthedUser();
     if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

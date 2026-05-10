@@ -143,7 +143,9 @@ export default async function DashboardPage() {
                 const st = tripStatus(trip.startDate, trip.endDate);
                 const cost = trip.stops.reduce((n, s) => n + s.activities.reduce((m, a) => m + a.cost, 0), 0);
                 return (
-                  <div key={trip.id} className="card" style={{ padding: 0, overflow: 'hidden' }}>
+                  <div key={trip.id} className="card trip-card-hover" style={{ padding: 0, overflow: 'hidden', position: 'relative' }}>
+                    {/* Invisible full-card link */}
+                    <Link href={`/trips/${trip.id}/builder`} aria-label={`Open ${trip.name}`} style={{ position: 'absolute', inset: 0, zIndex: 0 }} />
                     {/* Cover */}
                     <div style={{ height: 110, background: trip.coverPhoto ? `url(${trip.coverPhoto}) center/cover` : gradient(trip.id), position: 'relative' }}>
                       <span style={{ position: 'absolute', top: '0.6rem', right: '0.6rem', background: st.bg, color: st.color, padding: '0.18rem 0.6rem', borderRadius: 999, fontSize: '0.68rem', fontWeight: 700, border: `1px solid ${st.color}40` }}>
@@ -180,7 +182,7 @@ export default async function DashboardPage() {
                           { href: `/trips/${trip.id}/budget`, label: '💰 Budget' },
                           { href: `/trips/${trip.id}/view`, label: '👁️ View' },
                         ].map(({ href, label }) => (
-                          <Link key={href} href={href} style={{ flex: 1, textAlign: 'center', fontSize: '0.72rem', fontWeight: 600, color: 'var(--text-muted)', padding: '0.3rem', borderRadius: 'var(--radius-sm)', background: 'var(--bg-main)', transition: 'color 0.15s' }}>
+                          <Link key={href} href={href} style={{ flex: 1, textAlign: 'center', fontSize: '0.72rem', fontWeight: 600, color: 'var(--text-muted)', padding: '0.3rem', borderRadius: 'var(--radius-sm)', background: 'var(--bg-main)', transition: 'color 0.15s', position: 'relative', zIndex: 1 }}>
                             {label}
                           </Link>
                         ))}

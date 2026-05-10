@@ -183,8 +183,14 @@ export default function TripsPage() {
             const isDeleting = deletingId === trip.id;
 
             return (
-              <div key={trip.id} className="card" style={{ padding: 0, overflow: 'hidden', position: 'relative' }}>
-
+              <div
+                key={trip.id}
+                className="card"
+                onClick={() => { if (!deletingId) router.push(`/trips/${trip.id}/builder`); }}
+                style={{ padding: 0, overflow: 'hidden', position: 'relative', cursor: 'pointer', transition: 'transform 0.15s, box-shadow 0.15s' }}
+                onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = 'var(--shadow-lg)'; }}
+                onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = ''; }}
+              >
                 {/* Delete confirmation overlay */}
                 {isDeleting && (
                   <div style={{
@@ -243,7 +249,7 @@ export default function TripsPage() {
                     </h3>
                     <button
                       id={`delete-trip-${trip.id}`}
-                      onClick={() => setDeletingId(trip.id)}
+                      onClick={e => { e.stopPropagation(); setDeletingId(trip.id); }}
                       title="Delete trip"
                       style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', fontSize: '0.95rem', padding: '0.1rem 0.3rem', borderRadius: 'var(--radius-sm)', flexShrink: 0 }}
                     >
@@ -308,7 +314,7 @@ export default function TripsPage() {
                       { href: `/trips/${trip.id}/notes`,     icon: '📝',  label: 'Notes'     },
                       { href: `/trips/${trip.id}/view`,      icon: '👁️',  label: 'View'      },
                     ].map(({ href, icon, label }) => (
-                      <Link key={href} href={href} style={{
+                      <Link key={href} href={href} onClick={e => e.stopPropagation()} style={{
                         display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.15rem',
                         padding: '0.4rem 0.2rem', borderRadius: 'var(--radius-sm)',
                         background: 'var(--bg-main)', fontSize: '0.65rem', fontWeight: 600,

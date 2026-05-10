@@ -273,3 +273,61 @@ input, select, textarea {
   max-width: 100%;
   box-sizing: border-box;
 }
+
+/* Clickable trip card hover lift (CSS-only — safe in server components) */
+.trip-card-hover {
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.trip-card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ─── Date input: calendar icon visibility ─── */
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"] {
+  color-scheme: light;
+  background-color: #ffffff;
+  color: #0F172A;
+  border: 1.5px solid #CBD5E1;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-md);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator,
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.7;
+  filter: invert(30%) sepia(50%) saturate(400%) hue-rotate(210deg);
+  transform: scale(1.15);
+}
+
+input[type="date"]:focus,
+input[type="time"]:focus,
+input[type="datetime-local"]:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(79,70,229,0.15);
+}
+
+@media (prefers-color-scheme: dark) {
+  input[type="date"],
+  input[type="time"],
+  input[type="datetime-local"] {
+    color-scheme: dark;
+    background-color: #1E293B;
+    color: #F1F5F9;
+    border-color: #334155;
+  }
+  input[type="date"]::-webkit-calendar-picker-indicator,
+  input[type="time"]::-webkit-calendar-picker-indicator,
+  input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+    filter: invert(80%) sepia(10%) saturate(200%) hue-rotate(200deg);
+    opacity: 0.9;
+  }
+}
